@@ -17,23 +17,23 @@ public class InputReader : IPlayerInput
     private GameInput gameInput;
 
     [Inject]
-    public InputReader(LazyInject<GameInput> input)
+    public InputReader(GameInput input)
     {
-        gameInput = input.Value;
+        gameInput = input;
         gameInput.Enable();
 
         gameInput.Gameplay.CameraRotation.performed += OnMouseMove;
-        gameInput.Gameplay.Movement.performed += OnMovementPerformed;
+        gameInput.Gameplay.Movement.performed += OnMovementPress;
+        gameInput.Gameplay.Movement.canceled += OnMovementPress;
     }
 
-    private void OnMovementPerformed(InputAction.CallbackContext context)
+    private void OnMovementPress(InputAction.CallbackContext context)
     {
-        Debug.Log("OnMovementPerformed invoked");
         Move?.Invoke(context.ReadValue<Vector2>());
     }
 
     private void OnMouseMove(InputAction.CallbackContext context)
     {
-        MouseMove.Invoke(context.ReadValue<Vector2>());
+        MouseMove?.Invoke(context.ReadValue<Vector2>());
     }
 }

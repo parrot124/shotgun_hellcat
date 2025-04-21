@@ -1,4 +1,5 @@
 using Game.Common.Interfaces;
+using Game.Player;
 using UnityEngine;
 using Zenject;
 
@@ -7,17 +8,30 @@ public class PlayerController : MonoBehaviour
 {
     private CharacterController characterController;
     private IPlayerInput playerInput;
+    private PlayerConfig config;
+
+    private Vector2 moveVector;
 
     [Inject]
     private void Construct(IPlayerInput input)
     {
         playerInput = input;
-        playerInput.MouseMove += MoveHandler;
+        playerInput.Move += MoveHandler;
+    }
+
+    private void OnEnable()
+    {
+        characterController = GetComponent<CharacterController>();
+        config = GetComponent<PlayerConfig>();
+    }
+
+    private void Update()
+    {
+        characterController.Move(moveVector * Time.deltaTime * config.Speed);
     }
 
     private void MoveHandler(Vector2 vector)
     {
-        Debug.Log("MovementHadler invoked");
-        characterController.attachedRigidbody.AddForce(vector, ForceMode.Force);   
+        moveVector = vector;
     }
 }
