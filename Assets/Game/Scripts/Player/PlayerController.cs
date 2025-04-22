@@ -1,3 +1,4 @@
+using System;
 using Game.Common.Interfaces;
 using Game.Player;
 using UnityEngine;
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
     {
         playerInput = input;
         playerInput.Move += MoveHandler;
+        playerInput.MouseMove += MouseMoveHandler;
     }
 
     private void OnEnable()
@@ -27,11 +29,23 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        characterController.Move(moveVector * Time.deltaTime * config.Speed);
+        DoMove();
+    }
+
+    private void DoMove()
+    {
+        Vector3 move = transform.forward * moveVector.y + transform.right * moveVector.x;
+        characterController.Move(move * Time.deltaTime);
     }
 
     private void MoveHandler(Vector2 vector)
     {
         moveVector = vector;
+    }
+
+    private void MouseMoveHandler(Vector2 vector)
+    {
+        float horizontal = vector.x;
+        transform.Rotate(0, config.MouseSensitivity * horizontal * Time.deltaTime, 0);
     }
 }

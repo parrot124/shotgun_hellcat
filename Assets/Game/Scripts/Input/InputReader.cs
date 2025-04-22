@@ -1,6 +1,7 @@
 using System;
 using Game.Common.Interfaces;
 using Game.Input;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
@@ -19,6 +20,8 @@ public class InputReader : IPlayerInput
     [Inject]
     public InputReader(GameInput input)
     {
+        Debug.Log("InputReader installer");
+
         gameInput = input;
         gameInput.Enable();
 
@@ -29,6 +32,8 @@ public class InputReader : IPlayerInput
 
     private void OnMovementPress(InputAction.CallbackContext context)
     {
+        Debug.Log("Movement pressed");
+
         Move?.Invoke(context.ReadValue<Vector2>());
     }
 
