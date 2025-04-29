@@ -1,5 +1,6 @@
 using Game.Common.Interfaces;
 using Game.Input;
+using Game.Player;
 using UnityEngine;
 using Zenject;
 
@@ -7,6 +8,7 @@ namespace Game.Installers
 {
     public class TestSceneInstaller : MonoInstaller
     {
+        [SerializeField] private PlayerConfigData playerConfig;
         [SerializeField] private GameObject playerPrefab;
         [SerializeField] private GameObject cameraPrefab;
         [SerializeField] private Transform startPoint;
@@ -30,6 +32,7 @@ namespace Game.Installers
         {
             playerPrefab.transform.position = startPoint.position;
 
+            Container.Bind<PlayerConfigData>().FromInstance(playerConfig).AsSingle().NonLazy();
             Container.Bind<PlayerController>().FromComponentInNewPrefab(playerPrefab).AsSingle().Lazy();
         }
 

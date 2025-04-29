@@ -11,5 +11,6 @@ namespace Game.Common.Interfaces
         public event Action Jump;
         public event Action Sneak;
         public event Action Pause;
+        public event Action Dash;
     }
 }
