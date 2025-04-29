@@ -146,6 +146,15 @@ namespace Game.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""7d53773b-cfa4-4c83-8162-9c6112896d40"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -258,6 +267,17 @@ namespace Game.Input
                     ""action"": ""CameraRotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0b463fc7-e5bd-4ef4-971b-3b102180b14e"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -272,6 +292,7 @@ namespace Game.Input
             m_Gameplay_Sneak = m_Gameplay.FindAction("Sneak", throwIfNotFound: true);
             m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
             m_Gameplay_Shoot = m_Gameplay.FindAction("Shoot", throwIfNotFound: true);
+            m_Gameplay_Dash = m_Gameplay.FindAction("Dash", throwIfNotFound: true);
         }
 
         ~@GameInput()
@@ -358,6 +379,7 @@ namespace Game.Input
         private readonly InputAction m_Gameplay_Sneak;
         private readonly InputAction m_Gameplay_Pause;
         private readonly InputAction m_Gameplay_Shoot;
+        private readonly InputAction m_Gameplay_Dash;
         /// <summary>
         /// Provides access to input actions defined in input action map "Gameplay".
         /// </summary>
@@ -393,6 +415,10 @@ namespace Game.Input
             /// Provides access to the underlying input action "Gameplay/Shoot".
             /// </summary>
             public InputAction @Shoot => m_Wrapper.m_Gameplay_Shoot;
+            /// <summary>
+            /// Provides access to the underlying input action "Gameplay/Dash".
+            /// </summary>
+            public InputAction @Dash => m_Wrapper.m_Gameplay_Dash;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -437,6 +463,9 @@ namespace Game.Input
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
+                @Dash.started += instance.OnDash;
+                @Dash.performed += instance.OnDash;
+                @Dash.canceled += instance.OnDash;
             }
 
             /// <summary>
@@ -466,6 +495,9 @@ namespace Game.Input
                 @Shoot.started -= instance.OnShoot;
                 @Shoot.performed -= instance.OnShoot;
                 @Shoot.canceled -= instance.OnShoot;
+                @Dash.started -= instance.OnDash;
+                @Dash.performed -= instance.OnDash;
+                @Dash.canceled -= instance.OnDash;
             }
 
             /// <summary>
@@ -548,6 +580,13 @@ namespace Game.Input
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnShoot(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Dash" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnDash(InputAction.CallbackContext context);
         }
     }
 }
