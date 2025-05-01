@@ -99,8 +99,8 @@ public class PlayerController : MonoBehaviour
     
     private void MouseMoveHandler(Vector2 vector)
     {
-        float rotationDelta = config.MouseSensitivity * vector.x;
-        transform.Rotate(0, rotationDelta, 0);
+        float angle = vector.x * config.MouseSensitivity;
+        rb.rotation = Quaternion.Euler(rb.rotation.eulerAngles.x, rb.rotation.eulerAngles.y + angle, rb.rotation.eulerAngles.z);
     }
     
     private void DashHandler()

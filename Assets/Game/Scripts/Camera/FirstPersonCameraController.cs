@@ -19,15 +19,15 @@ public class FirstPersonCameraController : MonoBehaviour
     {
         player = controller.gameObject.transform;
         playerInput = input;
-        
-
     }
 
     private void OnEnable()
     {
         playerInput.MouseMove += MouseMoveHandler;
         rig = transform.parent;
-        rig.LookAt(player.forward);
+        rig.SetParent(player);
+
+        rig.position = player.position;
     }
 
     private void Start()
@@ -38,9 +38,6 @@ public class FirstPersonCameraController : MonoBehaviour
 
     private void Update()
     {
-        rig.position = player.position;
-        rig.LookAt(player.transform.forward);
-
         Debug.DrawRay(transform.position, rig.forward, Color.yellow, 0.1f);
     }
 
