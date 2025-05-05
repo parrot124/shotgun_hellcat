@@ -152,6 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1be125c1fb86a804c92c5a9d5a58b795, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fovMultiplier: 3
+  interpolationValue: 0.127
 --- !u!114 &1229324547892265479
 MonoBehaviour:
   m_ObjectHideFlags: 0
