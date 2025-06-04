@@ -5,17 +5,19 @@ using UnityEngine;
 using Zenject;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, ISnapshotable
 {
     [Header("Components")]
     [SerializeField] private Rigidbody rb;
     [SerializeField] private MeshRenderer meshRenderer;
+    [SerializeField] private TimeBody timeBody;
     
     [Header("Debug")]
     [SerializeField] private bool showDebugInfo = false;
-    [SerializeField] private bool isGrounded;
-    [SerializeField] private Vector2 moveVector;
-    [SerializeField] private bool canDash = true;
+    
+    [SerializeField] [SnapshotableField] private bool isGrounded;
+    [SerializeField] [SnapshotableField] private Vector2 moveVector;
+    [SerializeField] [SnapshotableField] private bool canDash = true;
 
     // Dependencies
     private IPlayerInput playerInput;
@@ -36,6 +38,7 @@ public class PlayerController : MonoBehaviour
         if (meshRenderer == null) meshRenderer = GetComponent<MeshRenderer>();
         config = GetComponent<PlayerConfig>();
         
+        timeBody = GetComponent<TimeBody>();
         canDash = true;
     }
 

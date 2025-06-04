@@ -14,7 +14,6 @@ public class FirstPersonCameraController : MonoBehaviour
 
     private float verticalEulerAngle;
     private float defaultFOV;
-    private Vector3 lastPosition;
     
     [SerializeField] float fovMultiplier;
     [SerializeField] [Range(0f, 1f)] float interpolationValue;
@@ -41,7 +40,6 @@ public class FirstPersonCameraController : MonoBehaviour
         verticalEulerAngle = 0f;
         
         defaultFOV = this.GetComponent<Camera>().fieldOfView;
-        lastPosition = player.position;
     }
 
     private void Update()
@@ -53,10 +51,6 @@ public class FirstPersonCameraController : MonoBehaviour
         
         float newFOV = Mathf.Lerp(defaultFOV, defaultFOV + groundVelocity.magnitude * fovMultiplier, interpolationValue);
         GetComponent<Camera>().fieldOfView = newFOV;
-        
-        lastPosition = player.position;
-
-        throw new NotImplementedException("DynamicFOV needs to be fixed");
     }
 
     private void MouseMoveHandler(Vector2 vector)
