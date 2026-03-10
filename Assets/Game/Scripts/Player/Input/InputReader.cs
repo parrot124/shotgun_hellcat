@@ -11,9 +11,10 @@ public class InputReader : IPlayerInput
     public event Action<Vector2> Move;
 
     public event Action Jump;
+    public event Action JumpCanceled;
     public event Action Sneak;
     public event Action Pause;
-    public event Action Dash;
+    public event Action Hook;
 
     private GameInput gameInput;
 
@@ -27,12 +28,18 @@ public class InputReader : IPlayerInput
         gameInput.Gameplay.Movement.performed += OnMovementPress;
         gameInput.Gameplay.Movement.canceled += OnMovementPress;
         gameInput.Gameplay.Jump.performed += OnJumpPress;
+        gameInput.Gameplay.Jump.canceled += OnJumpReleased;
         gameInput.Gameplay.Dash.performed += OnDashPress;
+    }
+
+    private void OnJumpReleased(InputAction.CallbackContext obj)
+    {
+        JumpCanceled?.Invoke();
     }
 
     private void OnDashPress(InputAction.CallbackContext obj)
     {
-        Dash?.Invoke();
+        Hook?.Invoke();
     }
 
     private void OnJumpPress(InputAction.CallbackContext context)

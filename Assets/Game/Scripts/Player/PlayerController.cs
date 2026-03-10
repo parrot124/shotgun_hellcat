@@ -1,138 +1,128 @@
-using System.Collections;
+using System;
 using Game.Common.Interfaces;
 using Game.Player;
+using Game.Scripts.Player.StateMachine;
+using Game.Scripts.Player.StateMachine.States;
 using UnityEngine;
 using Zenject;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour, ISnapshotable
 {
+    public event Action<bool> OnGroundedChanged;
+    
     [Header("Components")]
-    [SerializeField] private Rigidbody rb;
-    [SerializeField] private MeshRenderer meshRenderer;
-    [SerializeField] private TimeBody timeBody;
+    [SerializeField] private CharacterController controller;
     
-    [Header("Debug")]
-    [SerializeField] private bool showDebugInfo = false;
-    
-    [SerializeField] [SnapshotableField] private bool isGrounded;
-    [SerializeField] [SnapshotableField] private Vector2 moveVector;
-    [SerializeField] [SnapshotableField] private bool canDash = true;
-
     // Dependencies
     private IPlayerInput playerInput;
     private PlayerConfig config;
     
-    // Constants
-    private const float GroundCheckDistance = 0.1f;
+    // Runtime fields
+    private Vector3 wishDirection;
+    private Vector3 velocity;
+    private bool isGrounded;
+    private bool isJumpButtonHolding;
+    
+    // State-Dependent fields
+    private PhysicsConfig playerPhysicsConfig;
+    private PlayerStateMachine stateMachine;
     
     [Inject]
-    private void Construct(IPlayerInput input)
+    private void Construct(IPlayerInput input, PlayerStateMachine stateMachine)
     {
         playerInput = input;
-    }
-
-    private void Awake()
-    {
-        if (rb == null) rb = GetComponent<Rigidbody>();
-        if (meshRenderer == null) meshRenderer = GetComponent<MeshRenderer>();
-        config = GetComponent<PlayerConfig>();
+        this.stateMachine = stateMachine;
         
-        timeBody = GetComponent<TimeBody>();
-        canDash = true;
-    }
-
-    private void OnEnable()
-    {
-        playerInput.Move += MoveHandler;
-        playerInput.Jump += JumpHandler;
-        playerInput.MouseMove += MouseMoveHandler;
-        playerInput.Dash += DashHandler;
+        config = GetComponent<PlayerConfig>();
+        controller = GetComponent<CharacterController>();
     }
 
     private void FixedUpdate()
     {
         GroundedCheck();
-        ApplyMovement();
-        ApplyGravity();
-    }
 
-    private void ApplyGravity()
-    {
-        if (!isGrounded) rb.AddForce(Physics.gravity * (rb.mass * config.GravityMultiplier), ForceMode.Force);
+        Vector3 globalWishDirection = transform.right * wishDirection.x + transform.forward * wishDirection.y;  // y=input forward, as z in Vector3? Fix if y=input.y = forward
+
+        stateMachine.Tick(ref velocity, globalWishDirection.normalized);  // ← PASS GLOBAL!
+
+        controller.Move(velocity * Time.fixedDeltaTime);
+        
+        if (isJumpButtonHolding) JumpHandler();
+        
+        Debug.DrawRay(transform.position, globalWishDirection, Color.green);
+        Debug.DrawRay(transform.position, velocity, Color.blue);
     }
 
     private void GroundedCheck()
     {
-        float rayLength = Mathf.Abs(meshRenderer.bounds.min.y - transform.position.y) + GroundCheckDistance;
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, rayLength);
+        bool prevGrounded = isGrounded;
         
-        if (showDebugInfo)
-        {
-            Debug.DrawRay(transform.position, Vector3.down * rayLength, isGrounded ? Color.green : Color.red);
-        }
-    }
+        Ray ray = new Ray(transform.position, Vector3.down);
+        isGrounded = Physics.SphereCast(ray,controller.radius,controller.height/2.0f + 0.1f, 1 << LayerMask.NameToLayer("Ground"));
 
-    private void ApplyMovement()
-    {
-        if (moveVector.sqrMagnitude > 0.01f)
+        if (prevGrounded != isGrounded)
         {
-            Vector3 moveDirection = transform.forward * moveVector.y + transform.right * moveVector.x;
-            rb.AddForce(moveDirection.normalized * config.Speed, ForceMode.Acceleration);
+            OnGroundedChanged?.Invoke(isGrounded);
         }
     }
     
+    private void MoveHandler(Vector2 moveVector)
+    {
+        wishDirection = new Vector3(moveVector.x, moveVector.y, 0);
+    }
+
     private void JumpHandler()
     {
-        if (isGrounded)
-        {
-            rb.AddForce(Vector3.up * config.JumpForce, ForceMode.Impulse);
-            
-            if (showDebugInfo)
-            {
-                Debug.Log($"Прыжок выполнен! Игрок на земле: {isGrounded}");
-            }
-        }
+        stateMachine.TryJump(ref velocity);
     }
     
-    private void MoveHandler(Vector2 vector)
+    private void OnEnable()
     {
-        moveVector = vector;
-    }
-    
-    private void MouseMoveHandler(Vector2 vector)
-    {
-        float angle = vector.x * config.MouseSensitivity;
-        rb.rotation = Quaternion.Euler(rb.rotation.eulerAngles.x, rb.rotation.eulerAngles.y + angle, rb.rotation.eulerAngles.z);
-    }
-    
-    private void DashHandler()
-    {
-        if (!canDash) return;
+        playerInput.Move += MoveHandler;
+        playerInput.MouseMove += MouseMoveHandler;
+        playerInput.Jump += OnJumpPressed;
+        playerInput.JumpCanceled += OnJumpReleased;
+        playerInput.Hook += HookHandler;
         
-        rb.AddForce(transform.forward * config.DashForce, ForceMode.Impulse);
-        
-        StartCoroutine(DashCooldown());
-        
-        if (showDebugInfo)
-        {
-            Debug.Log($"Рывок выполнен в направлении: {transform.forward}");
-        }
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
-    private IEnumerator DashCooldown()
+    private void OnJumpReleased()
     {
-        canDash = false;
-        yield return new WaitForSeconds(config.DashCooldown);
-        canDash = true;
+        isJumpButtonHolding = false;
+    }
+
+    private void OnJumpPressed()
+    {
+        isJumpButtonHolding = true;
+    }
+
+    private void HookHandler()
+    {
+        Ray hookRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Physics.Raycast(hookRay, out RaycastHit hit, config.HookDistance);
+
+        stateMachine.TryHook(hit);
+    }
+
+    private void MouseMoveHandler(Vector2 mouseDelta)
+    {
+        float rotationY = mouseDelta.x * config.MouseSensitivity;
+        transform.Rotate(0, rotationY, 0);
     }
 
     private void OnDisable()
     {
         playerInput.Move -= MoveHandler;
-        playerInput.Jump -= JumpHandler;
         playerInput.MouseMove -= MouseMoveHandler;
-        playerInput.Dash -= DashHandler;
+        playerInput.Jump -= JumpHandler;
+        playerInput.Hook -= HookHandler;
     }
-
+    
+    private void OnGUI()
+    {
+        float hSpeed = new Vector3(velocity.x, 0, velocity.z).magnitude;
+        GUILayout.Label($"Speed: {hSpeed:F2}", GUILayout.Height(300), GUILayout.Width(300));
+    }
 }

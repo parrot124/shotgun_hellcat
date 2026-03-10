@@ -9,8 +9,9 @@ namespace Game.Common.Interfaces
         public event Action<Vector2> Move;
 
         public event Action Jump;
+        public event Action JumpCanceled;
         public event Action Sneak;
         public event Action Pause;
-        public event Action Dash;
+        public event Action Hook;
     }
 }

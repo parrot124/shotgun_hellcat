@@ -12,11 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53dc310153af2074b922ec10741f29a1, type: 3}
   m_Name: Basic Player Config
   m_EditorClassIdentifier: 
-  DefaultSpeed: 38
   MaxHP: 100
   MaxMana: 500
-  MouseSensitivity: 1.2
+  MouseSensitivity: 0.028125
   JumpForce: 220
-  GravityMultiplier: 3
-  DashForce: 350
-  DashCooldown: 2

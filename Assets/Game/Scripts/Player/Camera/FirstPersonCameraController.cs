@@ -1,8 +1,8 @@
-using System;
 using Game.Common.Interfaces;
 using UnityEngine;
 using Zenject;
 
+///needs rework?
 public class FirstPersonCameraController : MonoBehaviour
 {
     //dependencies
@@ -11,18 +11,26 @@ public class FirstPersonCameraController : MonoBehaviour
 
     private Transform player;
     private Transform rig;
+    
+    private CharacterController playerCharacterController;
+    private Camera playerCamera;
 
     private float verticalEulerAngle;
     private float defaultFOV;
     
-    [SerializeField] float fovMultiplier;
-    [SerializeField] [Range(0f, 1f)] float interpolationValue;
+    [SerializeField] float FOVMultiplier;
+    [SerializeField] [Range(0f, 1f)] float lerpValue;
 
     [Inject]
     private void Construct(PlayerController controller, IPlayerInput input)
     {
         player = controller.gameObject.transform;
         playerInput = input;
+        
+        config = GetComponent<CameraConfig>();
+        playerCamera = GetComponent<Camera>();
+        defaultFOV = playerCamera.fieldOfView;
+        playerCharacterController = player.GetComponent<CharacterController>();
     }
 
     private void OnEnable()
@@ -33,31 +41,24 @@ public class FirstPersonCameraController : MonoBehaviour
 
         rig.position = player.position;
     }
-
-    private void Start()
-    {
-        config = GetComponent<CameraConfig>();
-        verticalEulerAngle = 0f;
-        
-        defaultFOV = this.GetComponent<Camera>().fieldOfView;
-    }
-
+    
     private void Update()
     {
-        Debug.DrawRay(transform.position, rig.forward, Color.yellow, 0.1f);
-
-        Vector3 groundVelocity = transform.parent.parent.GetComponent<Rigidbody>().linearVelocity;
-        groundVelocity.y = 0;
+        Vector3 horizontalVelocity = playerCharacterController.velocity;
+        horizontalVelocity.y = 0;
         
-        float newFOV = Mathf.Lerp(defaultFOV, defaultFOV + groundVelocity.magnitude * fovMultiplier, interpolationValue);
-        GetComponent<Camera>().fieldOfView = newFOV;
+        float newFOV = Mathf.Lerp(defaultFOV, defaultFOV + horizontalVelocity.magnitude * FOVMultiplier, lerpValue);
+        playerCamera.fieldOfView = newFOV;
     }
 
     private void MouseMoveHandler(Vector2 vector)
     {
         verticalEulerAngle = Mathf.Clamp(verticalEulerAngle + -vector.y * config.MouseSensitivity, -90f, 90f);
-        //float horizontal = vector.x * config.MouseSensitivity * Time.deltaTime;
-
         transform.rotation = Quaternion.Euler(verticalEulerAngle, transform.rotation.eulerAngles.y, 0);
+    }
+
+    private void OnDisable()
+    {
+        playerInput.MouseMove -= MouseMoveHandler;
     }
 }
