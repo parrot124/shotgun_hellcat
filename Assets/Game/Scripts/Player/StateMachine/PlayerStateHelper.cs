@@ -1,3 +1,4 @@
+using Game.Player.Abilities;
 using UnityEngine;
 
 namespace Game.Scripts.Player.StateMachine
@@ -50,12 +51,47 @@ namespace Game.Scripts.Player.StateMachine
             velocity += wishDir * accAmount;
         }
         
+        public static void ApplyHookPull(ref Vector3 velocity, Vector3 hookPoint, Transform playerTransform,
+            HookConfig config, ref bool isHooked, ref Vector3 lastHookPoint)
+        {
+            if (!isHooked) return;
+
+            Vector3 toHook = hookPoint - playerTransform.position;
+            float distance = toHook.magnitude;
+
+            if (distance < 3f)
+            {
+                isHooked = false;
+                return;
+            }
+
+            Vector3 pullDir = toHook.normalized;
+            float pullForce = config.PullStrength * (distance / config.MaxHookDistance);
+
+            velocity = Vector3.Lerp(velocity, pullDir * config.MaxPullSpeed, pullForce * Time.deltaTime);
+        
+            lastHookPoint = hookPoint;
+        }
+        
+        public static bool TryStartHook(Transform cameraTransform, LayerMask hookableMask,
+            HookConfig config, out Vector3 hitPoint)
+        {
+            hitPoint = Vector3.zero;
+            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward,
+                    out RaycastHit hit, config.MaxHookDistance, hookableMask))
+            {
+                hitPoint = hit.point;
+                return true;
+            }
+            return false;
+        }
+        
         public static void AirControl(ref Vector3 velocity, Vector3 wishDir, float airControl, float airAccel)
         {
             if (wishDir.magnitude < 0.001f) return;
 
-            float ySpeed = velocity.y;           // сохраняем вертикаль
-            velocity.y = 0;                      // работаем только с горизонтальной скоростью
+            float ySpeed = velocity.y;           
+            velocity.y = 0;                      
 
             float speed = velocity.magnitude;
             if (speed < 0.001f)
@@ -64,18 +100,18 @@ namespace Game.Scripts.Player.StateMachine
                 return;
             }
 
-            velocity.Normalize();                // теперь velocity — unit vector
+            velocity.Normalize();                
 
             float dot = Vector3.Dot(velocity, wishDir);
-            if (dot > 0)                         // только если движемся примерно в нужном направлении
+            if (dot > 0)                         
             {
                 float k = airControl * dot * dot * Time.fixedDeltaTime * airAccel;
                 velocity += k * wishDir;
                 velocity.Normalize();
             }
 
-            velocity *= speed;                   // возвращаем прежнюю скорость
-            velocity.y = ySpeed;                 // восстанавливаем Y
+            velocity *= speed;                   
+            velocity.y = ySpeed;                 
         }
     }
 }

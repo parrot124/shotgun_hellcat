@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Game.Player.Camera;
 using Game.Scripts.Player.StateMachine.States;
 using UnityEngine;
 using Zenject;
@@ -32,9 +33,9 @@ namespace Game.Scripts.Player.StateMachine
             lastVelocity = velocity;
         }
 
-        public void CameraTick(ref Transform cameraTransform)
+        public void CameraTick(Transform cameraTransform, Vector2 currentMouseDelta, ref float xRotation)
         {
-            currentState.UpdateCamera(ref cameraTransform, lastVelocity);
+            currentState.UpdateCamera(cameraTransform, ref xRotation, currentMouseDelta, lastVelocity);
         }
 
         public void SetState<T>() where T : PlayerState
@@ -80,7 +81,7 @@ namespace Game.Scripts.Player.StateMachine
 
         public void TryHook(RaycastHit hitInfo)
         {
-            //apply velocity towards hitInfo hit point
+            currentState.TryHook();
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using Game.Common.Interfaces;
 using Game.Player;
+using Game.Player.Camera;
 using Game.Scripts.Player.StateMachine;
 using Game.Scripts.Player.StateMachine.States;
 using UnityEngine;
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour, ISnapshotable
     // Dependencies
     private IPlayerInput playerInput;
     private PlayerConfig config;
+    private CameraSettings cameraSettings;
     
     // Runtime fields
     private Vector3 wishDirection;
@@ -29,10 +31,11 @@ public class PlayerController : MonoBehaviour, ISnapshotable
     private PlayerStateMachine stateMachine;
     
     [Inject]
-    private void Construct(IPlayerInput input, PlayerStateMachine stateMachine)
+    private void Construct(IPlayerInput input, PlayerStateMachine stateMachine, CameraSettings cameraSettings)
     {
         playerInput = input;
         this.stateMachine = stateMachine;
+        this.cameraSettings = cameraSettings;
         
         config = GetComponent<PlayerConfig>();
         controller = GetComponent<CharacterController>();
@@ -42,9 +45,9 @@ public class PlayerController : MonoBehaviour, ISnapshotable
     {
         GroundedCheck();
 
-        Vector3 globalWishDirection = transform.right * wishDirection.x + transform.forward * wishDirection.y;  // y=input forward, as z in Vector3? Fix if y=input.y = forward
+        Vector3 globalWishDirection = transform.right * wishDirection.x + transform.forward * wishDirection.y;  
 
-        stateMachine.Tick(ref velocity, globalWishDirection.normalized);  // ← PASS GLOBAL!
+        stateMachine.Tick(ref velocity, globalWishDirection.normalized);
 
         controller.Move(velocity * Time.fixedDeltaTime);
         
@@ -84,8 +87,6 @@ public class PlayerController : MonoBehaviour, ISnapshotable
         playerInput.Jump += OnJumpPressed;
         playerInput.JumpCanceled += OnJumpReleased;
         playerInput.Hook += HookHandler;
-        
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void OnJumpReleased()
@@ -108,7 +109,7 @@ public class PlayerController : MonoBehaviour, ISnapshotable
 
     private void MouseMoveHandler(Vector2 mouseDelta)
     {
-        float rotationY = mouseDelta.x * config.MouseSensitivity;
+        float rotationY = mouseDelta.x * cameraSettings.Sensitivity;
         transform.Rotate(0, rotationY, 0);
     }
 

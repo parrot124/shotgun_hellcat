@@ -17,3 +17,6 @@ MonoBehaviour:
   midpoint: 0
   maxSpeed: 10
   landingKick: 0
+  sensitivity: 0.2
+  strafeRollIntensity: 0.75
+  rollLerpSpeed: 12

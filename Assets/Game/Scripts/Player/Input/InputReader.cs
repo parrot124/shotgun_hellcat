@@ -25,6 +25,7 @@ public class InputReader : IPlayerInput
         gameInput.Enable();
 
         gameInput.Gameplay.CameraRotation.performed += OnMouseMove;
+        gameInput.Gameplay.CameraRotation.canceled += OnMouseMove;
         gameInput.Gameplay.Movement.performed += OnMovementPress;
         gameInput.Gameplay.Movement.canceled += OnMovementPress;
         gameInput.Gameplay.Jump.performed += OnJumpPress;

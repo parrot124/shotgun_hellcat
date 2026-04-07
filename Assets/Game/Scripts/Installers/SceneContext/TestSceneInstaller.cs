@@ -4,6 +4,7 @@ using System.Linq;
 using Game.Common.Interfaces;
 using Game.Input;
 using Game.Player;
+using Game.Player.Abilities;
 using Game.Player.Camera;
 using Game.Scripts.Player.StateMachine;
 using Game.Scripts.Player.StateMachine.States;
@@ -26,6 +27,7 @@ namespace Game.Installers
         [SerializeField] private GameObject playerPrefab;
         [SerializeField] private GameObject cameraPrefab;
         [SerializeField] private Transform startPoint;
+        [SerializeField] private HookConfig hookConfig;
 
         public override void InstallBindings()
         {
@@ -49,6 +51,8 @@ namespace Game.Installers
             //bind state configs
             Container.Bind<GroundedPhysicsConfig>().FromInstance(groundedConfig).AsSingle(); 
             Container.Bind<AirbornePhysicsConfig>().FromInstance(airborneConfig).AsSingle();
+            
+            Container.Bind<HookConfig>().FromInstance(hookConfig).AsSingle();
             
             Container.Bind<CameraSettings>().FromInstance(cameraConfig).AsSingle();
             
