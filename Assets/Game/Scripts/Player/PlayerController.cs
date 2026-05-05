@@ -1,7 +1,7 @@
 using System;
-using Game.Common.Interfaces;
 using Game.Player;
 using Game.Player.Camera;
+using Game.Scripts.Player.Input.Common;
 using Game.Scripts.Player.StateMachine;
 using Game.Scripts.Player.StateMachine.States;
 using UnityEngine;

@@ -10,33 +10,14 @@ namespace Game.Scripts.Player.StateMachine.States
     {
         [Inject] private AirbornePhysicsConfig playerPhysicsConfig;
         [Inject] private CameraSettings cameraSettings;
-        [Inject] private HookConfig  hookConfig;
         
         private float cameraTimer;
         private float currentRoll;
-        private float hookingTime;
-        private bool isHooking;
-        private Vector3 hookPoint;
-
-
-        public override void TryHook()
-        {
-            if (TryStartHook(Camera.main.transform, 1 << LayerMask.NameToLayer("Ground"), hookConfig, out hookPoint))
-            {
-                isHooking = true;
-                hookingTime = Time.time;
-            };
-        }
 
         public override void Update(ref Vector3 velocity, Vector3 wishDirection)
         {
             Accelerate(ref velocity, wishDirection, playerPhysicsConfig.Acceleration, playerPhysicsConfig.MaxSpeed);
             ApplyGravity(ref velocity, playerPhysicsConfig.Gravity);
-            
-            if (isHooking)
-            {
-                ApplyHookPull(ref velocity, hookPoint, Camera.main.transform.parent.parent, hookConfig, ref isHooking, ref hookPoint);
-            }
         }
 
         public override void UpdateCamera(Transform cameraTransform, ref float xRotation, Vector2 mouseDelta, Vector3 velocity)

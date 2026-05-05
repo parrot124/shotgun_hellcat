@@ -12,8 +12,6 @@ namespace Game.Scripts.Player.StateMachine
 
         public abstract PhysicsConfig GetConfig();
         
-        public abstract void TryHook();
-
         public abstract void Update(ref Vector3 velocity, Vector3 wishDirection);
 
         public abstract void UpdateCamera(Transform cameraTransform, ref float xRotation, Vector2 currentMouseDelta, Vector3 velocity);

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Game.Common.Interfaces
+namespace Game.Scripts.Player.Input.Common
 {
     public interface IPlayerInput
     {

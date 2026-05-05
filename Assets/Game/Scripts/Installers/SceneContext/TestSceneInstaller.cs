@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Game.Common.Interfaces;
 using Game.Input;
 using Game.Player;
 using Game.Player.Abilities;
 using Game.Player.Camera;
+using Game.Scripts.Player.Input.Common;
 using Game.Scripts.Player.StateMachine;
 using Game.Scripts.Player.StateMachine.States;
 using UnityEngine;
@@ -18,6 +18,7 @@ namespace Game.Installers
         [Header("State Physics Configs")] 
         [SerializeField] private GroundedPhysicsConfig groundedConfig;
         [SerializeField] private AirbornePhysicsConfig airborneConfig;
+        [SerializeField] private HookingStateConfig hookingConfig;
         
         [Header("Camera Configs")]
         [SerializeField] private CameraSettings cameraConfig;
@@ -51,15 +52,18 @@ namespace Game.Installers
             //bind state configs
             Container.Bind<GroundedPhysicsConfig>().FromInstance(groundedConfig).AsSingle(); 
             Container.Bind<AirbornePhysicsConfig>().FromInstance(airborneConfig).AsSingle();
-            
-            Container.Bind<HookConfig>().FromInstance(hookConfig).AsSingle();
+            Container.Bind<HookingStateConfig>().FromInstance(hookingConfig).AsSingle();
             
             Container.Bind<CameraSettings>().FromInstance(cameraConfig).AsSingle();
+            Container.Bind<HookConfig>().FromInstance(hookConfig).AsSingle();
             
             //stateTransitionTable
             StateTransitionTable table = new();
             table.AddTransition<AirborneState, GroundedState>();
             table.AddTransition<GroundedState, AirborneState>();
+            table.AddTransition<AirborneState, HookingState>();
+            table.AddTransition<GroundedState, HookingState>();
+            table.AddTransition<HookingState, HookingState>();
             
             Container.Bind<StateTransitionTable>().FromInstance(table).AsSingle().NonLazy();
             

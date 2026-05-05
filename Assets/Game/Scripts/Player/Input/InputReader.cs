@@ -1,6 +1,6 @@
 using System;
-using Game.Common.Interfaces;
 using Game.Input;
+using Game.Scripts.Player.Input.Common;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;

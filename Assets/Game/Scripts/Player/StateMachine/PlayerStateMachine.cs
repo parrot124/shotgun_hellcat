@@ -81,7 +81,12 @@ namespace Game.Scripts.Player.StateMachine
 
         public void TryHook(RaycastHit hitInfo)
         {
-            currentState.TryHook();
+            if (hitInfo.transform != null && 
+                stateTransitionTable.TransitionAllowed(CurrentStateType, typeof(HookingState)))
+            {
+                EnterIn<HookingState>();
+            }
+            Debug.Log("Hooking failed!");
         }
     }
 }

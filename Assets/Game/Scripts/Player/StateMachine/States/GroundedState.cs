@@ -11,15 +11,10 @@ namespace Game.Scripts.Player.StateMachine.States
     {
         [Inject] private GroundedPhysicsConfig playerPhysicsConfig;
         [Inject] private CameraSettings cameraSettings;
-        [Inject] private HookConfig hookConfig;
         
         private int frictionDelay;
         private float cameraTimer;
         private float currentRoll;
-
-        private bool isHooking;
-        private float hookingTime;
-        private Vector3 hookPoint;
 
         public override void Update(ref Vector3 velocity, Vector3 wishDirection)
         {
@@ -29,11 +24,6 @@ namespace Game.Scripts.Player.StateMachine.States
             
             Accelerate(ref velocity, wishDirection.normalized, playerPhysicsConfig.Acceleration, playerPhysicsConfig.MaxSpeed);
             SnapToGround(ref velocity, playerPhysicsConfig.StepSnapForce);
-            
-            if (isHooking)
-            {
-                ApplyHookPull(ref velocity, hookPoint, Camera.main.transform.parent.parent, hookConfig, ref isHooking, ref hookPoint);
-            }
         }
 
         public override void UpdateCamera(Transform cameraTransform, ref float xRotation, Vector2 mouseDelta, Vector3 velocity)
@@ -66,15 +56,6 @@ namespace Game.Scripts.Player.StateMachine.States
         public void TryJump(ref Vector3 velocity)
         {
             PerformJump(ref velocity, playerPhysicsConfig.JumpImpulse);
-        }
-
-        public override void TryHook()
-        {
-            if (TryStartHook(Camera.main.transform, 1 << LayerMask.NameToLayer("Ground"), hookConfig, out hookPoint))
-            {
-                isHooking = true;
-                hookingTime = Time.time;
-            };
         }
     }
 }

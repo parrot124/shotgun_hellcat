@@ -41,7 +41,6 @@ PlayerSettings:
     height: 1
   m_SplashScreenLogos: []
   m_VirtualRealitySplashScreen: {fileID: 0}
-  m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1024
   defaultScreenHeight: 768
   defaultScreenWidthWeb: 960
@@ -114,6 +113,7 @@ PlayerSettings:
   xboxEnableGuest: 0
   xboxEnablePIXSampling: 0
   metalFramebufferOnly: 0
+  metalUseMetalDisplayLink: 0
   xboxOneResolution: 0
   xboxOneSResolution: 0
   xboxOneXResolution: 3
@@ -147,12 +147,10 @@ PlayerSettings:
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
-  m_HolographicPauseOnTrackingLoss: 1
   xboxOneDisableKinectGpuReservation: 1
   xboxOneEnable7thCore: 1
   vrSettings:
     enable360StereoCapture: 0
-  isWsaHolographicRemotingEnabled: 0
   enableFrameTimingStats: 0
   enableOpenGLProfilerGPURecorders: 1
   allowHDRDisplaySupport: 0
@@ -176,7 +174,7 @@ PlayerSettings:
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
   AndroidBundleVersionCode: 1
-  AndroidMinSdkVersion: 25
+  AndroidMinSdkVersion: 26
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
   AndroidPreferredDataLocation: 1
@@ -839,25 +837,25 @@ PlayerSettings:
   webWasm2023: 0
   webEnableSubmoduleStrippingCompatibility: 0
   scriptingDefineSymbols:
-    Android: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62
-    EmbeddedLinux: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62
-    GameCoreScarlett: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62
-    GameCoreXboxOne: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62
-    Kepler: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62
-    LinuxHeadlessSimulation: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62
-    Nintendo Switch: DOTWEEN
-    Nintendo Switch 2: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62
-    PS4: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62
-    PS5: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62
-    QNX: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62
+    Android: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62;DOTWEEN_NOPHYSICS2D
+    EmbeddedLinux: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62;DOTWEEN_NOPHYSICS2D
+    GameCoreScarlett: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62;DOTWEEN_NOPHYSICS2D
+    GameCoreXboxOne: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62;DOTWEEN_NOPHYSICS2D
+    Kepler: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62;DOTWEEN_NOPHYSICS2D;DOTWEEN
+    LinuxHeadlessSimulation: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62;DOTWEEN_NOPHYSICS2D
+    Nintendo Switch: DOTWEEN;DOTWEEN_NOPHYSICS2D
+    Nintendo Switch 2: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62;DOTWEEN_NOPHYSICS2D;DOTWEEN
+    PS4: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62;DOTWEEN_NOPHYSICS2D
+    PS5: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62;DOTWEEN_NOPHYSICS2D
+    QNX: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62;DOTWEEN_NOPHYSICS2D
     ReservedCFE: DOTWEEN
-    Standalone: DOTWEEN;APP_UI_EDITOR_ONLY;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62
-    VisionOS: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62
-    WebGL: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62
-    Windows Store Apps: DOTWEEN
-    XboxOne: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62
-    iPhone: DOTWEEN
-    tvOS: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62
+    Standalone: DOTWEEN;APP_UI_EDITOR_ONLY;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62;DOTWEEN_NOPHYSICS2D
+    VisionOS: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62;DOTWEEN_NOPHYSICS2D
+    WebGL: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62;DOTWEEN_NOPHYSICS2D
+    Windows Store Apps: DOTWEEN;DOTWEEN_NOPHYSICS2D
+    XboxOne: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62;DOTWEEN_NOPHYSICS2D
+    iPhone: DOTWEEN;DOTWEEN_NOPHYSICS2D
+    tvOS: DOTWEEN;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_62;DOTWEEN_NOPHYSICS2D
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

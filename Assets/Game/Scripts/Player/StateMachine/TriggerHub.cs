@@ -1,5 +1,5 @@
 using System;
-using Game.Common.Interfaces;
+using Game.Scripts.Player.Input.Common;
 using Zenject;
 
 public class TriggerHub

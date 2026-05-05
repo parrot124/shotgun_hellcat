@@ -41,7 +41,6 @@ namespace Game.Player.Camera
         }
         
         //TODO:
-        //ApplyStrafeRoll
         //LandingKick
         //HookingFOVBoost
     }
