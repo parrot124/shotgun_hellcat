@@ -14,7 +14,7 @@ namespace Game.Scripts.Player.StateMachine.States
         private float currentRoll;
         private bool isHooked;
         
-        public override void Enter()
+        public override void Enter(PlayerContext context)
         {
             Debug.Log("Entering HookingState");
         }
@@ -31,7 +31,7 @@ namespace Game.Scripts.Player.StateMachine.States
 
         public override void Update(ref Vector3 velocity, Vector3 wishDirection)
         {
-            PlayerStateHelper.ApplyHookPull(ref velocity, hookPoint, playerTransform, hookingStateConfig.hookConfig, ref isHooked, ref hookPoint);
+            
         }
 
         public override void UpdateCamera(Transform cameraTransform, ref float xRotation, Vector2 currentMouseDelta, Vector3 velocity)

@@ -1,6 +1,7 @@
 using System;
 using Game.Player;
 using Game.Player.Camera;
+using Game.Scripts;
 using Game.Scripts.Player.Input.Common;
 using Game.Scripts.Player.StateMachine;
 using Game.Scripts.Player.StateMachine.States;
@@ -14,6 +15,7 @@ public class PlayerController : MonoBehaviour, ISnapshotable
     
     [Header("Components")]
     [SerializeField] private CharacterController controller;
+    [SerializeField] private PlayerContext context;
     
     // Dependencies
     private IPlayerInput playerInput;
@@ -47,7 +49,7 @@ public class PlayerController : MonoBehaviour, ISnapshotable
 
         Vector3 globalWishDirection = transform.right * wishDirection.x + transform.forward * wishDirection.y;  
 
-        stateMachine.Tick(ref velocity, globalWishDirection.normalized);
+        stateMachine.Tick(ref velocity, globalWishDirection.normalized, context);
 
         controller.Move(velocity * Time.fixedDeltaTime);
         

@@ -27,7 +27,7 @@ namespace Game.Scripts.Player.StateMachine
             this.stateTransitionTable = stateTransitionTable;
         }
         
-        public void Tick(ref Vector3 velocity, Vector3 wishDirection)
+        public void Tick(ref Vector3 velocity, Vector3 wishDirection, PlayerContext context)
         {
             currentState.Update(ref velocity, wishDirection);
             lastVelocity = velocity;

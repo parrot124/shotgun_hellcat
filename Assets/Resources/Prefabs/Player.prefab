@@ -9,8 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6392828504114819530}
+  - component: {fileID: 1664668329087074223}
   - component: {fileID: 408497603352860745}
   - component: {fileID: 7083864004767892390}
+  - component: {fileID: -1755307475492290219}
   - component: {fileID: 5585318267161308676}
   - component: {fileID: 1803046736362372458}
   - component: {fileID: 4904283614038268181}
@@ -38,6 +40,18 @@ Transform:
   - {fileID: 1266664467218520698}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1664668329087074223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225008950228077341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eda18d9b8b274d84cbd045d2fa8b2752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameAssembly::Game.Scripts.PlayerContext
 --- !u!114 &408497603352860745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51,6 +65,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
+  context: {fileID: 0}
 --- !u!114 &7083864004767892390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,6 +82,18 @@ MonoBehaviour:
   maxMana: 0
   mouseSensitivity: 0
   hookDistance: 0
+--- !u!114 &-1755307475492290219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225008950228077341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e85911639a1aa954c8ee33ffe6db4c9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameAssembly::Game.Scripts.HookService
 --- !u!23 &5585318267161308676
 MeshRenderer:
   m_ObjectHideFlags: 0

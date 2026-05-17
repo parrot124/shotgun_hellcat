@@ -5,6 +5,7 @@ using Game.Input;
 using Game.Player;
 using Game.Player.Abilities;
 using Game.Player.Camera;
+using Game.Scripts;
 using Game.Scripts.Player.Input.Common;
 using Game.Scripts.Player.StateMachine;
 using Game.Scripts.Player.StateMachine.States;

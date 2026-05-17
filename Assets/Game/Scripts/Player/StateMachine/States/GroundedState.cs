@@ -37,7 +37,7 @@ namespace Game.Scripts.Player.StateMachine.States
             cameraTransform.localRotation = Quaternion.Euler(xRotation, 0, currentRoll);
         }
 
-        public override void Enter()
+        public override void Enter(PlayerContext context)
         {
             frictionDelay = 2;
             Debug.Log("Entered GroundedState");
