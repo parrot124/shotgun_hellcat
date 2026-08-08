@@ -36,6 +36,11 @@ namespace Game.Scripts.Player.StateMachine.States
             Debug.Log("Entered AirborneState");
         }
 
+        public override void Enter()
+        {
+            //throw new System.NotImplementedException();
+        }
+
         public override void Exit()
         {
             Debug.Log("Exited AirborneState");

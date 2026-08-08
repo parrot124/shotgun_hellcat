@@ -45,8 +45,6 @@ public class PlayerController : MonoBehaviour, ISnapshotable
 
     private void FixedUpdate()
     {
-        GroundedCheck();
-
         Vector3 globalWishDirection = transform.right * wishDirection.x + transform.forward * wishDirection.y;  
 
         stateMachine.Tick(ref velocity, globalWishDirection.normalized, context);
@@ -54,52 +52,16 @@ public class PlayerController : MonoBehaviour, ISnapshotable
         controller.Move(velocity * Time.fixedDeltaTime);
         
         if (isJumpButtonHolding) JumpHandler();
-        
-        Debug.DrawRay(transform.position, globalWishDirection, Color.green);
-        Debug.DrawRay(transform.position, velocity, Color.blue);
-    }
-
-    private void GroundedCheck()
-    {
-        bool prevGrounded = isGrounded;
-        
-        Ray ray = new Ray(transform.position, Vector3.down);
-        isGrounded = Physics.SphereCast(ray,controller.radius,controller.height/2.0f + 0.1f, 1 << LayerMask.NameToLayer("Ground"));
-
-        if (prevGrounded != isGrounded)
-        {
-            OnGroundedChanged?.Invoke(isGrounded);
-        }
     }
     
-    private void MoveHandler(Vector2 moveVector)
-    {
-        wishDirection = new Vector3(moveVector.x, moveVector.y, 0);
-    }
-
-    private void JumpHandler()
-    {
-        stateMachine.TryJump(ref velocity);
-    }
+    //Handlers
+    private void MoveHandler(Vector2 moveVector) => wishDirection = new Vector3(moveVector.x, moveVector.y, 0);
     
-    private void OnEnable()
-    {
-        playerInput.Move += MoveHandler;
-        playerInput.MouseMove += MouseMoveHandler;
-        playerInput.Jump += OnJumpPressed;
-        playerInput.JumpCanceled += OnJumpReleased;
-        playerInput.Hook += HookHandler;
-    }
+    private void JumpHandler() => stateMachine.TryJump(ref velocity);
 
-    private void OnJumpReleased()
-    {
-        isJumpButtonHolding = false;
-    }
+    private void OnJumpReleased() => isJumpButtonHolding = false;
 
-    private void OnJumpPressed()
-    {
-        isJumpButtonHolding = true;
-    }
+    private void OnJumpPressed() => isJumpButtonHolding = true;
 
     private void HookHandler()
     {
@@ -115,17 +77,21 @@ public class PlayerController : MonoBehaviour, ISnapshotable
         transform.Rotate(0, rotationY, 0);
     }
 
+    //OnEnable/Disable   
+    private void OnEnable()
+    {
+        playerInput.Move += MoveHandler;
+        playerInput.MouseMove += MouseMoveHandler;
+        playerInput.Jump += OnJumpPressed;
+        playerInput.JumpCanceled += OnJumpReleased;
+        playerInput.Hook += HookHandler;
+    }
+    
     private void OnDisable()
     {
         playerInput.Move -= MoveHandler;
         playerInput.MouseMove -= MouseMoveHandler;
         playerInput.Jump -= JumpHandler;
         playerInput.Hook -= HookHandler;
-    }
-    
-    private void OnGUI()
-    {
-        float hSpeed = new Vector3(velocity.x, 0, velocity.z).magnitude;
-        GUILayout.Label($"Speed: {hSpeed:F2}", GUILayout.Height(300), GUILayout.Width(300));
     }
 }

@@ -19,6 +19,11 @@ namespace Game.Scripts.Player.StateMachine.States
             Debug.Log("Entering HookingState");
         }
 
+        public override void Enter()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override void Exit()
         {
             Debug.Log("Exiting HookingState");
