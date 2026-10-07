@@ -43,6 +43,11 @@ namespace Game.Scripts.Player.StateMachine.States
             Debug.Log("Entered GroundedState");
         }
 
+        public override void Enter()
+        {
+            //throw new System.NotImplementedException();
+        }
+
         public override void Exit()
         {
             Debug.Log("Exited GroundedState");

@@ -6,9 +6,10 @@ namespace Game.Scripts.Player.StateMachine
 {
     public abstract class PlayerState : IPlayerState, IPlayerCameraHandler
     {
-        public abstract void Enter(PlayerContext context);
-
         public abstract void Exit();
+        public abstract void Enter(PlayerContext context);
+        public abstract void Enter();
+
 
         public abstract PhysicsConfig GetConfig();
         

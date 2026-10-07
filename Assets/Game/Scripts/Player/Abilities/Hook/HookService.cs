@@ -10,7 +10,7 @@ namespace Game.Scripts
         
         public void ApplyHookPull(ref Vector3 velocity, HookConfig hookConfig, Vector3 wishDir, Vector3 hookPoint)
         {
-            PlayerStateHelper.ApplyHookPull(ref velocity, hookPoint, this.transform, hookConfig, ref isHooking);
+            //PlayerStateHelper.ApplyHookPull(ref velocity, hookPoint, this.transform, hookConfig, ref isHooking, );
         }
     }
 }
