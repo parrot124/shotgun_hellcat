@@ -12,7 +12,7 @@ using Zenject;
 public class PlayerController : MonoBehaviour, ISnapshotable
 {
     public event Action<bool> OnGroundedChanged;
-    
+
     [Header("Components")]
     [SerializeField] private CharacterController controller;
     [SerializeField] private PlayerContext context;
@@ -25,7 +25,6 @@ public class PlayerController : MonoBehaviour, ISnapshotable
     // Runtime fields
     private Vector3 wishDirection;
     private Vector3 velocity;
-    private bool isGrounded;
     private bool isJumpButtonHolding;
     
     // State-Dependent fields
@@ -56,13 +55,12 @@ public class PlayerController : MonoBehaviour, ISnapshotable
     
     //Handlers
     private void MoveHandler(Vector2 moveVector) => wishDirection = new Vector3(moveVector.x, moveVector.y, 0);
-    
-    private void JumpHandler() => stateMachine.TryJump(ref velocity);
 
     private void OnJumpReleased() => isJumpButtonHolding = false;
 
     private void OnJumpPressed() => isJumpButtonHolding = true;
 
+    private void JumpHandler() => stateMachine.TryJump(ref velocity);
     private void HookHandler()
     {
         Ray hookRay = Camera.main.ScreenPointToRay(Input.mousePosition);
