@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6392828504114819530}
+  - component: {fileID: 7989020430321396750}
   - component: {fileID: 1664668329087074223}
   - component: {fileID: 408497603352860745}
   - component: {fileID: 7083864004767892390}
@@ -16,7 +17,9 @@ GameObject:
   - component: {fileID: 5585318267161308676}
   - component: {fileID: 1803046736362372458}
   - component: {fileID: 4904283614038268181}
+  - component: {fileID: 4149566517830407986}
   - component: {fileID: -7552763984769956061}
+  - component: {fileID: 3635678820251211787}
   m_Layer: 0
   m_Name: Player
   m_TagString: GameController
@@ -40,6 +43,24 @@ Transform:
   - {fileID: 1266664467218520698}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7989020430321396750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225008950228077341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Zenject::Zenject.GameObjectContext
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 4149566517830407986}
+  _installerPrefabs: []
+  _autoRun: 1
+  _kernel: {fileID: 0}
 --- !u!114 &1664668329087074223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,6 +197,25 @@ CharacterController:
   m_SkinWidth: 0.2
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4149566517830407986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225008950228077341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f2062ed1426668469e2fac0141df079, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameAssembly::Game.Scripts.Core.Installers.GameObject_Installer.PlayerInstaller
+  groundedConfig: {fileID: 11400000, guid: d32c0fb0a85750d4390d945925a39066, type: 2}
+  airborneConfig: {fileID: 11400000, guid: cf0954f24e50a9349b8ccd1ad028b289, type: 2}
+  hookingConfig: {fileID: 11400000, guid: 34b9a417070355246a84ce30491586ff, type: 2}
+  hookConfig: {fileID: 11400000, guid: 4df0c99e53f4fbb419bb8b5d0184c94e, type: 2}
+  playerConfig: {fileID: 11400000, guid: b2bdd23e9fb7bf7489a067b0f23d00a5, type: 2}
+  cameraConfig: {fileID: 11400000, guid: 735ebba3c235d2e498995a3ddfa3f8aa, type: 2}
+  cameraPrefab: {fileID: 5211160558988333640, guid: 22eef616d3bdd00418db22caa509a43e, type: 3}
 --- !u!136 &-7552763984769956061
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -199,6 +239,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3635678820251211787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225008950228077341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20f7dd64c91b41939abaab4a08845b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameAssembly::Game.Scripts.Game.Scripts.Player.PlayerObserver
 --- !u!1 &9121156032913962383
 GameObject:
   m_ObjectHideFlags: 0
